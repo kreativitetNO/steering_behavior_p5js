@@ -5,6 +5,7 @@ class SteeringBehavior
         this.subject = subject;
         this.strength = strength;
         this.target = target;
+        this.pred = null;
         this.proximityBoost = { initialBoost: 0, currentBoost: 0, range: 0, decay: 0 };
     }
 
@@ -21,6 +22,19 @@ class SteeringBehavior
     getStrength()
     {
         return this.strength;
+    }
+
+    setActivationPredicate(pred)
+    {
+        this.pred = pred;
+    }
+
+    isActive()
+    {
+        if (this.pred == null)
+            return true;
+        else
+            return this.pred();
     }
 
     calculateForce()

@@ -1,7 +1,3 @@
-// TODO remove "magic numbers"
-// TODO find a way to prevent simulation from converging
-// TODO implement multiple pursuers and/or targets (auto-retargeting?)
-
 let simulation;
 let pursuer;
 let target;

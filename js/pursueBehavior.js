@@ -1,4 +1,4 @@
-class SeekBehavior extends SteeringBehavior
+class PursueBehavior extends SeekBehavior
 {
     constructor(subject, target, strength = 1)
     {
@@ -9,7 +9,12 @@ class SeekBehavior extends SteeringBehavior
     {
         if (this.target == null) return createVector2D();
 
-        let desired = p5.Vector.sub(this.target.getPosition(), this.subject.getPosition());
+        let target = this.target.getPosition();
+        let velocity = this.target.getVelocity();
+        velocity.mult(10);
+        target.add(velocity);
+
+        let desired = p5.Vector.sub(target, this.subject.getPosition());
         desired.setMag(this.subject.maxSpeed);
         let steering = p5.Vector.sub(desired, this.subject.getVelocity());
         return steering;

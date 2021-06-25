@@ -50,6 +50,16 @@ class Vehicle
         return this.velocity.copy();
     }
 
+    getMaxForce()
+    {
+        return this.maxForce;
+    }
+
+    getMaxSpeed()
+    {
+        return this.maxSpeed;
+    }
+
     resetPosition()
     {
         this.position = this.initialPosition.copy();
@@ -84,8 +94,11 @@ class Vehicle
         let boost = 0;
         for (let steeringBehavior of this.steeringBehaviors)
         {
-            force.add(steeringBehavior.calculateForce().mult(steeringBehavior.getStrength()));
-            boost += steeringBehavior.calculateBoost();
+            if (steeringBehavior.isActive())
+            {
+                force.add(steeringBehavior.calculateForce().mult(steeringBehavior.getStrength()));
+                boost += steeringBehavior.calculateBoost();
+            }
         }
         force.limit(this.maxForce * (1 + boost))
         this.applyForce(force);
