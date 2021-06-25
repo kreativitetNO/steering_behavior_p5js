@@ -1,4 +1,4 @@
-class PursueBehavior extends SeekBehavior
+class PursueBehavior extends SteeringBehavior
 {
     constructor(subject, target, strength = 1)
     {
