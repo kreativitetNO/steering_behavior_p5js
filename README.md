@@ -10,4 +10,4 @@ This is a slightly different approach than Dan implements in chapter 5 of his Na
 # References
 
 - [Steering Behaviors For Autonomous Characters - *Craig W. Reynolds*](https://www.red3d.com/cwr/steer/gdc99/)
-- [Nature of Code 2 playlist - *Daniel Schiffman*](https://www.youtube.com/watch?v=70MQ-FugwbI&list=PLRqwX-V7Uu6ZV4yEcW3uDwOgGXKUUsPOM)
+- [Nature of Code 2 playlist - *Daniel Shiffman*](https://www.youtube.com/watch?v=70MQ-FugwbI&list=PLRqwX-V7Uu6ZV4yEcW3uDwOgGXKUUsPOM)
