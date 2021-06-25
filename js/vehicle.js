@@ -8,49 +8,16 @@ class Vehicle
         this.acceleration = createVector();
         this.maxSpeed = 6;
         this.color = color(0, 0, 0);
-        this.boost = 1;
         this.maxForce = 0.25;
         this.size = size;
-        this.steeringBehavior = null;
-        this.target = null;
+        this.steeringBehaviors = new Array();
         this.wrapAroundHorizontalLimits = null;
         this.wrapAroundVerticalLimits = null;
     }
 
-    static seek(vehicle)
+    addSteeringBehavior(behavior)
     {
-        if (vehicle.target == null) return null;
-
-        let force = p5.Vector.sub(vehicle.target.position, vehicle.position);
-        force.setMag(vehicle.maxSpeed);
-        force.sub(vehicle.velocity);
-        force.limit(vehicle.maxForce);
-        return force;
-    }
-    
-    static flee(vehicle)
-    {
-        let dist = vehicle.position.dist(vehicle.target.position);
-        if (dist < 150)
-            vehicle.applyBoost(5 * 150 / dist);
-        else
-            vehicle.applyBoost(1);
-        return Vehicle.seek(vehicle).mult(-1);
-    }
-
-    applyBoost(boost)
-    {
-        this.boost = boost;
-    }
-    
-    setSteeringBehavior(f)
-    {
-        this.steeringBehavior = f;
-    }
-
-    setTarget(target)
-    {
-        this.target = target;
+        this.steeringBehaviors.push(behavior);
     }
 
     setColor(r, g, b)
@@ -76,6 +43,11 @@ class Vehicle
     getPosition()
     {
         return this.position.copy();
+    }
+
+    getVelocity()
+    {
+        return this.velocity.copy();
     }
 
     resetPosition()
@@ -108,27 +80,26 @@ class Vehicle
 
     update()
     {
-        if (this.steeringBehavior != null)
+        let force = createVector();
+        let boost = 0;
+        for (let steeringBehavior of this.steeringBehaviors)
         {
-            let force = this.steeringBehavior(this);
-            this.applyForce(force);
+            force.add(steeringBehavior.calculateForce().mult(steeringBehavior.getStrength()));
+            boost += steeringBehavior.calculateBoost();
         }
+        force.limit(this.maxForce * (1 + boost))
+        this.applyForce(force);
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);
         this.wrapAround();
         this.acceleration.set(0, 0);
-        this.speedBoost = 1;
     }
 
     applyForce(force)
     {
-        if (force != null)
-        {
-            this.acceleration.add(force.mult(this.boost));
-        }
+        this.acceleration.add(force);
     }
-
 
     draw()
     {

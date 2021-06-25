@@ -14,20 +14,23 @@ function setup()
     simulation.initialize();
 
     pursuer = new Vehicle(createVector(random(canvasWidth), random(canvasHeight)), 10);
-    pursuer.setSteeringBehavior(Vehicle.seek);
     pursuer.setMaxSpeed(10);
     pursuer.setColor(255, 0, 0);
-
+    
     target = new Vehicle(createVector(random(canvasWidth), random(canvasHeight)), 10);
     target.setWrapAroundHorizontalLimits(0, canvasWidth - 1);
     target.setWrapAroundVerticalLimits(0, canvasHeight - 1);
-    target.setSteeringBehavior(Vehicle.flee);
     target.setMaxSpeed(4);
     target.setColor(0, 255, 0);
 
-    pursuer.setTarget(target);
-    target.setTarget(pursuer);
+    let pursuerSeekingBehavior = new SeekBehavior(pursuer, target);
+    let targetFleeingBehavior = new FleeBehavior(target, pursuer);
+    targetFleeingBehavior.setProximityBoost(5, 150, 0.9); 
 
+    pursuer.addSteeringBehavior(pursuerSeekingBehavior);
+    target.addSteeringBehavior(targetFleeingBehavior);
+    
+    
     simulation.addVehicle(pursuer);
     simulation.addVehicle(target);
 }
